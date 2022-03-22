@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CreateFile": {
+      "commandName": "Project",
+      "commandLineArgs": "-u GigaBytes"
+    }
+  }
+}
