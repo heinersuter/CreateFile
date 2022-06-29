@@ -1,4 +1,6 @@
-﻿namespace CreateFile;
+﻿using System.Diagnostics;
+
+namespace CreateFile;
 
 internal static class FilesGenerator
 {
@@ -6,10 +8,11 @@ internal static class FilesGenerator
     {
         for (var i = 0; i < options.Count; i++)
         {
+            var stopwatch = Stopwatch.StartNew();
             var filename = GenerateFilename(options, i);
             var size = options.Size * Math.Pow(1024, (int)options.SizeUnit);
             GenerateFile(filename, (long)size, options.Mode);
-            Console.WriteLine($"File '{filename}' generated with size '{options.Size} {options.SizeUnit}'.");
+            Console.WriteLine($"File '{filename}' generated with size '{options.Size} {options.SizeUnit}' within {stopwatch.Elapsed}.");
         }
     }
 
@@ -18,6 +21,11 @@ internal static class FilesGenerator
         if (options.Count > 1)
         {
             return $"{Path.GetFileNameWithoutExtension(options.NamePattern)}-{index}{Path.GetExtension(options.NamePattern)}";
+        }
+
+        if (options.NamePattern == string.Empty)
+        {
+            return $"test-{options.Size}-{options.SizeUnit}.{(options.Mode == Mode.Random ? "txt" : "pdf")}";
         }
 
         return options.NamePattern;
@@ -47,13 +55,13 @@ internal static class FilesGenerator
 
     private static void GenerateRandomFile(string filename, long size)
     {
-        var data = new byte[1024];
+        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         var random = new Random();
-        using var stream = File.OpenWrite(filename);
-        for (var i = 0; i < size / 1024; i++)
+
+        using var stream = new StreamWriter(filename);
+        for (var i = 0L; i < size; i++)
         {
-            random.NextBytes(data);
-            stream.Write(data, 0, data.Length);
+            stream.Write(chars[random.Next(chars.Length)]);
         }
     }
 }
