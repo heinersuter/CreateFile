@@ -15,4 +15,7 @@ internal class Options
 
     [Option('n', "name", Required = false, HelpText = "Name[pattern] of file.")]
     public string NamePattern { get; set; } = "testFile.txt";
+
+    [Option('m', "mode", Required = false, HelpText = "File generation mode.")]
+    public Mode Mode { get; set; } = Mode.Empty;
 }

@@ -6,5 +6,5 @@ internal enum SizeUnit
     KiloBytes = 1,
     MegaBytes = 2,
     GigaBytes = 3,
-    TeraBytes = 4
+    TeraBytes = 4,
 }
